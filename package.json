@@ -1,6 +1,5 @@
 {
-  "homepage": "http://dev.kenny.us/vite-template",
-  "name": "vite-template",
+  "name": "habit-garden",
   "private": true,
   "version": "0.0.0",
   "type": "module",
