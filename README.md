@@ -1,1 +1,1 @@
-# vite-template
+# habit-garden
