@@ -5,10 +5,10 @@
 html,
 body {
   margin: 0;
+  padding: 0;
   position: relative;
   height: 100%;
   font-family: Cambria;
-  overflow-y: scroll;
 }
 
 ::selection {

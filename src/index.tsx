@@ -7,7 +7,7 @@ import "./global.css";
 
 const App = () => {
   return (
-    <Router basename={"/vite-template/"}>
+    <Router>
       <Routes>
         <Route index element={<Pages.Home />} />
         <Route path="about" element={<Pages.About />} />

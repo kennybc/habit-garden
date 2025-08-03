@@ -1,7 +1,8 @@
+import GardenCanvas from "@/components/GardenCanvas";
 import "./index.css";
 
 const Home = () => {
-  return <>Under Construction</>;
+  return <GardenCanvas />;
 };
 
 export default Home;
