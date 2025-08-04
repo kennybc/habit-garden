@@ -1,21 +1,11 @@
 import { Canvas } from "@react-three/fiber";
 import { OrthographicCamera } from "@react-three/drei";
 import { useState, useRef } from "react";
-import { Tile } from "./Tile";
-
-function IsoGrid({ size = 4, radius = 20 }) {
-  const tiles = [];
-  for (let gx = -radius; gx <= radius; gx++) {
-    for (let gy = -radius; gy <= radius; gy++) {
-      tiles.push(<Tile key={`${gx},${gy}`} gx={gx} gy={gy} size={size} />);
-    }
-  }
-  return <>{tiles}</>;
-}
+import { GardenGrid } from "./Tile";
 
 export default function GardenCanvas() {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(30);
+  const [zoom, setZoom] = useState(60);
 
   const [dragging, setDragging] = useState(false);
 
@@ -42,7 +32,7 @@ export default function GardenCanvas() {
         lastPointerPosition.current = { x: e.clientX, y: e.clientY };
       }}
       onWheel={(e) => {
-        setZoom((prev) => Math.min(100, Math.max(10, prev + e.deltaY * -0.01)));
+        setZoom((prev) => Math.min(100, Math.max(40, prev + e.deltaY * -0.01)));
       }}
     >
       <ambientLight intensity={0.7} />
@@ -58,7 +48,7 @@ export default function GardenCanvas() {
 
       {/* Pannable group */}
       <group position={[offset.x, 0, offset.y]}>
-        <IsoGrid />
+        <GardenGrid range={15} />
       </group>
     </Canvas>
   );
