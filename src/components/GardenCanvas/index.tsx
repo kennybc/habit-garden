@@ -32,7 +32,7 @@ export default function GardenCanvas() {
         lastPointerPosition.current = { x: e.clientX, y: e.clientY };
       }}
       onWheel={(e) => {
-        setZoom((prev) => Math.min(100, Math.max(40, prev + e.deltaY * -0.01)));
+        setZoom((prev) => Math.min(100, Math.max(20, prev + e.deltaY * -0.01)));
       }}
     >
       <ambientLight intensity={0.7} />

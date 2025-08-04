@@ -32,11 +32,7 @@ export const GardenGrid: FC<GardenGridProps> = ({ range = 20 }) => {
         list.push({
           key: `${gx}-${gy}`,
           props: {
-            position: [
-              (gx - gy) * (TILE_SIZE / 2),
-              (gx + gy) * 1e-4,
-              (gx + gy) * (TILE_SIZE / 4),
-            ],
+            position: [(gx - gy) * TILE_SIZE, 0, (gx + gy) * (TILE_SIZE / 2)],
             rotation: [-Math.PI / 2, 0, 0],
             color,
           },
@@ -49,7 +45,11 @@ export const GardenGrid: FC<GardenGridProps> = ({ range = 20 }) => {
   return (
     <Instances limit={4000} castShadow receiveShadow>
       <planeGeometry args={[TILE_SIZE, TILE_SIZE]} />
-      <meshStandardMaterial />
+      <meshStandardMaterial
+        polygonOffset
+        polygonOffsetFactor={2}
+        polygonOffsetUnits={2}
+      />
       {tiles.map(({ key, props }) => (
         <Instance key={key} {...props} />
       ))}
