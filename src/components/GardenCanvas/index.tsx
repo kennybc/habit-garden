@@ -1,16 +1,18 @@
 import { Canvas } from "@react-three/fiber";
 import { OrthographicCamera } from "@react-three/drei";
 import { useState, useRef } from "react";
-import { GardenGrid } from "./Tile";
+import { GardenTerrain } from "./GardenTerrain";
+import { Grid } from "../Grid";
+import { CAMERA_OFFSET } from "@/consts";
 
-export default function GardenCanvas() {
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(60);
+const GardenCanvas = () => {
+  const [offset, setOffset] = useState<Coordinate>({ x: 0, z: 0 });
+  const [zoom, setZoom] = useState(25);
 
   const [dragging, setDragging] = useState(false);
 
-  const lastPointerPosition = useRef({ x: 0, y: 0 });
-  const panMultiplier = 1 / zoom;
+  const lastPointerPosition = useRef<Coordinate>({ x: 0, z: 0 });
+  const panMultiplier = 1 / -zoom;
 
   return (
     <Canvas
@@ -20,19 +22,19 @@ export default function GardenCanvas() {
       onPointerMove={(e) => {
         if (!dragging) return;
         const dx = e.clientX - lastPointerPosition.current.x;
-        const dy = e.clientY - lastPointerPosition.current.y;
+        const dz = e.clientY - lastPointerPosition.current.z;
         setOffset((prev) => ({
           x: prev.x + dx * panMultiplier,
-          y: prev.y + dy * panMultiplier,
+          z: prev.z + dz * panMultiplier,
         }));
-        lastPointerPosition.current = { x: e.clientX, y: e.clientY };
+        lastPointerPosition.current = { x: e.clientX, z: e.clientY };
       }}
       onPointerDown={(e) => {
         setDragging(true);
-        lastPointerPosition.current = { x: e.clientX, y: e.clientY };
+        lastPointerPosition.current = { x: e.clientX, z: e.clientY };
       }}
       onWheel={(e) => {
-        setZoom((prev) => Math.min(100, Math.max(20, prev + e.deltaY * -0.01)));
+        setZoom((prev) => Math.min(30, Math.max(20, prev + e.deltaY * -0.01)));
       }}
     >
       <ambientLight intensity={0.7} />
@@ -42,14 +44,14 @@ export default function GardenCanvas() {
       <OrthographicCamera
         makeDefault
         zoom={zoom}
-        position={[50, 50, 50]}
-        rotation={[-Math.atan(Math.sqrt(2)), Math.PI / 4, 0]}
+        position={[offset.x, CAMERA_OFFSET, offset.z]}
+        rotation={[Math.atan(-1 / Math.sqrt(2)), Math.PI / 4, Math.PI / 8]}
       />
 
-      {/* Pannable group */}
-      <group position={[offset.x, 0, offset.y]}>
-        <GardenGrid range={15} />
-      </group>
+      <GardenTerrain />
+      <Grid />
     </Canvas>
   );
-}
+};
+
+export default GardenCanvas;
